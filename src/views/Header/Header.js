@@ -72,10 +72,6 @@ const Header = () => {
       </Drawer>
        
     </div>
-       
-       <Home/>
-       <Home/>
-
     </div>
   );
 };

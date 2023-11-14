@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/now-ui-dashboard.scss?v1.5.0";
 import "assets/css/demo.css";
-import LoginUser from './views/LoginUser';
+import Main from './views/Main';
 
 
   
@@ -14,7 +14,7 @@ ReactDOM.render(
 
   <BrowserRouter >
     <Switch>
-       <Route exact path="/home" component={LoginUser}/>
+       <Route exact path="/home" component={Main}/>
        
     </Switch>
   </BrowserRouter>,

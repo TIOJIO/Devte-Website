@@ -1,0 +1,16 @@
+.animated-block {
+  width: '100%';
+  height: 600px;
+  background-position: center;
+  background-repeat: no-repeat;
+ background-size: cover;
+  background-image: url('./bg.jpg');
+}
+
+.txt1{
+  color: rgba(255, 255, 255, 0.881);
+  
+}
+
+
+

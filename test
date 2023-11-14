@@ -1,0 +1,562 @@
+import {
+  SESSION_BUSINESS_NAME,
+  SESSION_BUSINESS_KEY,
+  SESSION_TOKEN_DURATION,
+  SESSION_USERNAME_KEY,
+  SESSION_TOKEN_NAME,
+  SESSION_USERNAME_NAME,
+  SESSION_BUSINESS_ID,
+  USER_PREFS,
+  USER,
+  USER_ID,
+  SESSION_BUSINESSES,
+  SESSION_CLASSROOMS,
+  SESSION_EMPLOYEES,
+  SESSION_EMPLOYE,
+  SESSION_STUDENTS,
+  SESSION_STUDENT,
+  SESSION_LESSONS,
+  SESSION_LESSON,
+  SESSION_BUSINESS_SCHOOL_TYPE,
+  SESSION_BULLETINS,
+  SESSION_LESSON_NOTES,
+  SESSION_BUSINESS
+} from 'config'
+import Cookies from 'universal-cookie'
+import CryptoJS from 'crypto-js'
+const cookies = new Cookies()
+
+const encryptJson = (data) => {
+  const encJson = CryptoJS.AES.encrypt(JSON.stringify(data),  process.env.REACT_APP_API_KEY).toString();
+  let encData = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(encJson));
+  return encData;
+};
+
+const decryptJson  = (data ) => {
+  try {
+    const jsonStr = CryptoJS.AES.decrypt(data, process.env.REACT_APP_API_KEY).toString(CryptoJS.enc.Utf8);
+    return JSON.parse(jsonStr);
+  } catch (err) {
+    return null;
+  }
+};
+
+function  decryptText(message)
+{
+
+  let bytes
+  try {
+    bytes = CryptoJS.AES.decrypt(message, process.env.REACT_APP_API_KEY)
+    //console.log(bytes)
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8)
+
+    return decrypted;
+  }
+  catch (err) {
+    //console.log('UNABLE TO DECIPHER',err)
+  }
+
+  return null
+}
+
+function  encriptText(text)
+{
+  let   password =  process.env.REACT_APP_API_KEY
+  const ciphertext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(text),password).toString();
+
+  return ciphertext;
+}
+
+export function setBusinessKey(businessKey) {
+  localStorage.setItem(SESSION_BUSINESS_KEY, encriptText(businessKey))
+}
+
+export function setBusinessName(businessName) {
+  localStorage.setItem(SESSION_BUSINESS_NAME, encriptText(businessName))
+}
+
+export function setBusinessSchoolType(schoolTyp) {
+  localStorage.setItem(SESSION_BUSINESS_SCHOOL_TYPE,  encriptText(schoolTyp))
+}
+
+
+
+export function setBusinessId(businessId) {
+  localStorage.setItem(SESSION_BUSINESS_ID, encriptText(businessId))
+}
+
+export function setUsername(username) {
+  localStorage.setItem(SESSION_USERNAME_NAME, encriptText(username))
+}
+
+export function setUserId(userId) {
+  localStorage.setItem(USER_ID, encriptText(userId))
+}
+
+
+export function getUserId() {
+
+  return decryptText(localStorage.getItem(USER_ID))
+}
+
+export function isLogin() {
+
+  if(localStorage.getItem(USER_ID) != null)
+  {
+    return  true
+  }
+  else{
+    return  false
+  }
+
+}
+
+export function getBusinessId() {
+  //return localStorage.getItem(SESSION_BUSINESS_ID)
+
+
+  try{
+    let business_json = decryptJson(localStorage.getItem(SESSION_BUSINESSES))
+
+
+    if(business_json === null)
+    {
+      return decryptText(localStorage.getItem(SESSION_BUSINESS_ID))
+    }
+    let business = JSON.parse(business_json)
+    if(Array.isArray(business))
+    {
+
+      if(business[0].business_id === null || business[0].business_id === undefined)
+      {
+        return decryptText(localStorage.getItem(SESSION_BUSINESS_ID))
+      }
+      return business[0].business_id;
+    }
+    else {
+      return decryptText(localStorage.getItem(SESSION_BUSINESS_ID))
+    }
+
+  }
+  catch (e)
+  {
+    return decryptText(localStorage.getItem(SESSION_BUSINESS_ID))
+  }
+
+  return null
+}
+
+
+export function getBusinessName() {
+
+  try{
+    let business_json = decryptJson(localStorage.getItem(SESSION_BUSINESSES))
+
+    if(business_json === null)
+    {
+      return decryptText(localStorage.getItem(SESSION_BUSINESS_NAME))
+    }
+    let business = JSON.parse(business_json)
+    if(Array.isArray(business))
+    {
+      if(business[0].name === null || business[0].name === undefined)
+      {
+        return decryptText(localStorage.getItem(SESSION_BUSINESS_NAME))
+      }
+      return business[0].name;
+    }
+    else {
+      return decryptText(localStorage.getItem(SESSION_BUSINESS_NAME))
+    }
+
+  }
+  catch (e)
+  {
+    return decryptText(localStorage.getItem(SESSION_BUSINESS_NAME))
+  }
+
+  return null
+}
+
+export function getBusiness() {
+
+  try{
+    let business_json = decryptJson(localStorage.getItem(SESSION_BUSINESSES))
+    if(business_json === null)
+    {
+      return null
+    }
+    let business = JSON.parse(business_json)
+    if(Array.isArray(business))
+    {
+      return business[0];
+    }
+
+  }
+  catch (e)
+  {
+
+  }
+
+  return null
+}
+
+
+export function getUsername() {
+  return decryptText(localStorage.getItem(SESSION_USERNAME_KEY))
+}
+
+
+
+export function getBusinessSchoolTyp() {
+
+  try{
+    let business_json = decryptJson(localStorage.getItem(SESSION_BUSINESSES))
+    if(business_json === null || undefined)
+    {
+      return decryptText(localStorage.getItem(SESSION_BUSINESS_SCHOOL_TYPE))
+    }
+    let business = JSON.parse(business_json)
+
+    if(Array.isArray(business))
+    {
+
+      if(business[0].business_key === null || business[0].business_key === undefined)
+      {
+        return decryptText(localStorage.getItem(SESSION_BUSINESS_SCHOOL_TYPE))
+      }
+      return business[0].business_key;
+    }
+    else{
+      return decryptText(localStorage.getItem(SESSION_BUSINESS_SCHOOL_TYPE))
+    }
+
+  }
+  catch (e)
+  {
+
+    return decryptText(localStorage.getItem(SESSION_BUSINESS_SCHOOL_TYPE))
+
+  }
+}
+
+export function getBusinessKey() {
+
+
+  try{
+    let business_json = decryptJson(localStorage.getItem(SESSION_BUSINESSES))
+    if(business_json === null || undefined)
+    {
+      return decryptText(localStorage.getItem(SESSION_BUSINESS_KEY))
+    }
+    let business = JSON.parse(business_json)
+
+    if(Array.isArray(business))
+    {
+
+      if(business[0].business_key === null || business[0].business_key === undefined)
+      {
+        return  decryptText(localStorage.getItem(SESSION_BUSINESS_KEY))
+      }
+      return business[0].business_key;
+    }
+    else{
+      return  decryptText(localStorage.getItem(SESSION_BUSINESS_KEY))
+    }
+
+  }
+  catch (e)
+  {
+
+    return  decryptText(localStorage.getItem(SESSION_BUSINESS_KEY))
+
+  }
+}
+
+export function setToken(appacademiaToken) {
+  if (typeof appacademiaToken !== 'string') {
+    throw new Error('Invalid Token')
+  }
+
+  cookies.set(SESSION_TOKEN_NAME, appacademiaToken, {
+    path: '/',
+    maxAge: SESSION_TOKEN_DURATION,
+  })
+  localStorage.setItem(SESSION_TOKEN_NAME, appacademiaToken)
+}
+
+export function getToken() {
+  return cookies.get(SESSION_TOKEN_NAME)
+}
+
+export function clearSession() {
+  cookies.remove(SESSION_TOKEN_NAME, {
+    path: '/',
+    maxAge: SESSION_TOKEN_DURATION,
+  })
+  localStorage.removeItem(SESSION_TOKEN_NAME)
+  localStorage.removeItem(SESSION_TOKEN_NAME)
+  localStorage.removeItem(SESSION_BUSINESS_NAME)
+  localStorage.removeItem(SESSION_BUSINESS_ID)
+  localStorage.removeItem(SESSION_BUSINESS_KEY)
+  localStorage.removeItem(SESSION_BUSINESSES)
+  localStorage.removeItem(SESSION_EMPLOYE)
+  localStorage.removeItem(SESSION_EMPLOYEES)
+  localStorage.removeItem(SESSION_CLASSROOMS)
+  localStorage.removeItem(SESSION_STUDENT)
+  localStorage.removeItem(SESSION_STUDENTS)
+  localStorage.removeItem(SESSION_LESSON)
+  localStorage.removeItem(SESSION_LESSONS)
+  localStorage.removeItem(USER)
+  localStorage.removeItem(USER_ID)
+  localStorage.removeItem(SESSION_USERNAME_NAME)
+  localStorage.removeItem(SESSION_BUSINESS)
+
+
+
+}
+
+export function setThemeType(themeType) {
+  localStorage.setItem(USER_PREFS.THEME_KEY, themeType)
+}
+
+export function getThemeType() {
+  return localStorage.getItem(USER_PREFS.THEME_KEY)
+}
+
+export function setUser(user) {
+  localStorage.setItem(USER, encryptJson (user))
+}
+export function getUser() {
+  return decryptJson(localStorage.getItem(USER))
+}
+
+export function setBusinesses(businesses) {
+  localStorage.setItem(SESSION_BUSINESSES,  encryptJson(businesses))
+}
+
+export function setClassRooms(classrooms) {
+  debugger
+  localStorage.setItem(SESSION_CLASSROOMS, encryptJson(classrooms))
+}
+
+export function getClassRooms() {
+  return decryptJson(localStorage.getItem(SESSION_CLASSROOMS))
+}
+export function getClassRoomsNumber() {
+
+
+  try {
+    const classrooms =  decryptJson(localStorage.getItem(SESSION_CLASSROOMS))
+    let  localclassrooms= JSON.parse(classrooms)
+    if(localclassrooms != null && (Array.isArray(localclassrooms))
+    )
+    {
+
+      return localclassrooms.length
+    }
+    else {
+      return 0
+    }
+  }
+  catch (e)
+  {
+
+  }
+
+  return 0
+
+}
+
+export function setEmployees(employees) {
+  localStorage.setItem(SESSION_EMPLOYEES, encryptJson(employees))
+}
+
+export function getEmployees() {
+  return decryptJson(localStorage.getItem(SESSION_EMPLOYEES))
+}
+
+export function getEmployeesNumber() {
+
+
+  try {
+    const employees =  decryptJson(localStorage.getItem(SESSION_EMPLOYEES))
+    let  localemployees= JSON.parse(employees)
+    if(localemployees != null && (Array.isArray(localemployees))
+    )
+    {
+
+      return localemployees.length
+    }
+    else {
+      return 0
+    }
+  }
+  catch (e)
+  {
+
+  }
+
+  return 0
+
+}
+
+export function setEmploye(employe) {
+  localStorage.setItem(SESSION_EMPLOYE
+      , encryptJson(employe))
+}
+
+export function getEmploye() {
+  return decryptJson(localStorage.getItem(SESSION_EMPLOYE)
+  )
+}
+
+export function setStudents(students) {
+  localStorage.setItem(SESSION_STUDENTS, encryptJson(students))
+}
+
+export function getStudents() {
+  return decryptJson(localStorage.getItem(SESSION_STUDENTS))
+}
+export function getStudentsNumber() {
+
+  try {
+    const students = decryptJson(localStorage.getItem(SESSION_STUDENTS))
+    let  localmystudents= JSON.parse(students)
+    if(localmystudents != null && (Array.isArray(localmystudents))
+    )
+    {
+
+      return localmystudents.length
+    }
+    else {
+      return 0
+    }
+  }
+  catch (e)
+  {
+
+  }
+
+  return 0
+}
+
+export function setStudent(student) {
+  localStorage.setItem(SESSION_STUDENT
+      , encryptJson(student))
+}
+
+export function getStudent() {
+  return decryptJson(localStorage.getItem(SESSION_STUDENT)
+  )
+}
+
+export function getBusinesses() {
+  return decryptJson(localStorage.getItem(SESSION_BUSINESSES))
+}
+
+export function getCurrentBusiness() {
+  let business_json = decryptJson(localStorage.getItem(SESSION_BUSINESSES))
+
+  try{
+    let business = JSON.parse(business_json)
+    if(Array.isArray(business))
+    {
+      return business[0];
+    }
+
+  }
+  catch (e)
+  {
+
+  }
+
+
+  return null
+
+}
+
+
+
+
+export function setBulletins(bulletins) {
+  localStorage.setItem(SESSION_BULLETINS, encryptJson(bulletins))
+}
+
+export function getBulletins() {
+  return decryptJson(localStorage.getItem(SESSION_BULLETINS))
+}
+
+export function setLessonNotes(lessonNotes) {
+  localStorage.setItem(SESSION_LESSON_NOTES, encryptJson(lessonNotes))
+}
+
+export function getLessonNotes() {
+  return decryptJson(localStorage.getItem(SESSION_LESSON_NOTES))
+}
+
+export function getBulletinsNumber() {
+
+  try {
+    const bulletins = decryptJson(localStorage.getItem(SESSION_BULLETINS))
+    let  localbulletins = JSON.parse(bulletins)
+    if(localbulletins != null && (Array.isArray(localbulletins))
+    )
+    {
+
+      return localbulletins.length
+    }
+    else {
+      return 0
+    }
+  }
+  catch (e)
+  {
+
+  }
+
+  return 0
+
+}
+
+export function setLessons(lessons) {
+  localStorage.setItem(SESSION_LESSONS, encryptJson(lessons))
+}
+
+export function getLessons() {
+  return decryptJson(localStorage.getItem(SESSION_LESSONS))
+}
+
+export function getLessonsNumber() {
+
+  try {
+    const lessons = decryptJson(localStorage.getItem(SESSION_LESSONS))
+    let  locallessons= JSON.parse(lessons)
+    if(locallessons != null && (Array.isArray(locallessons))
+    )
+    {
+
+      return locallessons.length
+    }
+    else {
+      return 0
+    }
+  }
+  catch (e)
+  {
+
+  }
+
+  return 0
+
+}
+
+export function setLesson(lesson) {
+  localStorage.setItem(SESSION_LESSON
+      , encryptJson(lesson))
+}
+
+export function getLesson() {
+  return decryptJson(localStorage.getItem(SESSION_LESSON)
+  )
+}

@@ -6,9 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import GitHubIcon from '@material-ui/icons/GitHub';
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import YouTubeIcon from '@material-ui/icons/YouTube';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import FacebookInIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import MenuIcon from '@material-ui/icons/Menu';
 import Log from './white.png'
 import { Divider } from '@material-ui/core';
@@ -42,13 +43,7 @@ const Footer = () => {
          
           <br/>
           <h3>Our Social Media</h3>
-          <div className={classes.socialIcons}>
-             <GitHubIcon style={{color:'white',fontSize:'40px' }} />
-             <WhatsAppIcon style={{color:'white',fontSize:'40px' }} />
-             <LinkedInIcon style={{color:'white',fontSize:'40px' }} />
-             <FacebookInIcon style={{color:'white',fontSize:'40px' }} />
-             
-          </div>
+          
         </Grid>
 
         {/* Deuxième bloc avec titre, texte et lien */}
@@ -89,9 +84,39 @@ const Footer = () => {
         </Grid>
       </Grid>
       
-           <Divider style={{backgroundColor:"white",height:'2px',borderRadius:'5px',marginTop:'30px'}}/>
+      <Divider style={{backgroundColor:"white",height:'2px',borderRadius:'5px',marginTop:'30px'}}/>
            <br/>
-           <p>©DevTe 2023</p>
+           <Paper
+             elevation={0}
+             style={{backgroundColor:'#003366'}}
+                  sx={{
+                    p: 2,
+                    margin: 'auto',
+                    maxWidth: '90%',
+                    flexGrow: 1,
+                    backgroundColor:'#003366'
+                      
+                  }}
+               >
+                <Grid container spacing={2}>
+                  
+                  <Grid item xs={12}  sm container>
+                    <Grid item xs container direction="row" spacing={2}>
+                      <Grid item><p style={{fontWeight:'bold',color:'white'}}>© DevTe 2023</p></Grid>
+                      <Grid item><p style={{fontWeight:'bold',color:'white'}}> License</p></Grid>
+                      <Grid item><p style={{fontWeight:'bold',color:'white'}}> Confidentiality</p></Grid>
+                    </Grid>
+                    <Grid item xs={2} container direction="row" spacing={2}>
+                      <Grid item><GitHubIcon style={{color:'white',fontSize:'30px' }} /></Grid>
+                      <Grid item><YouTubeIcon style={{color:'white',fontSize:'30px' }} /></Grid>
+                      <Grid item><LinkedInIcon style={{color:'white',fontSize:'30px' }} /></Grid>
+                      <Grid item><FacebookInIcon style={{color:'white',fontSize:'30px' }} /></Grid>
+                      <Grid item><TwitterIcon style={{color:'white',fontSize:'30px' }} /></Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+    </Paper>
+           
     </Paper>
   );
 };

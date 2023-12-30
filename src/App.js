@@ -2,15 +2,22 @@
 import React from "react";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import HomePage from "./Pages/Home/HomePage";
+import { ThemeProvider } from "@emotion/react";
+import theme from "./context/Theme/Theme";
+import HomePageTest from "./Pages/Home/HomePage.test";
 
 
   
 const  App=()=>(
-    <BrowserRouter>
-      <Routes>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Routes>
           <Route  path="/" element={<HomePage/>}/>
+          <Route path="/test" element={<HomePageTest/>}/>
         </Routes>
     </BrowserRouter>
+    </ThemeProvider>
+  
  
   )
   

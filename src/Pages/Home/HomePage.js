@@ -5,8 +5,10 @@ import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Container  from '@mui/material/Container';
 import Log from "../../assets/img/log.png"
 import Banner from "../../assets/img/banner.jpg"
+
 const Img = styled('img')({
   margin: 'auto',
   display: 'block',
@@ -16,7 +18,7 @@ const Img = styled('img')({
 
 const HomePage = (props) => {
     return (
-      <div style={{ backgroundColor:'white'}}>
+      <Container maxWidth="xxl" sx={{backgroundColor:"light.main", px:0}}>
           <Header/>
           <img src={Banner} alt='Devte banner' style={{width:"100%", height:"700px"}}/>
           <Paper
@@ -30,7 +32,7 @@ const HomePage = (props) => {
                 theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
             }}
           >
-            <Grid container spacing={2}>
+            <Grid sx={{backgroundColor:"light.main"}} container spacing={2}>
               
               <Grid item xs={12} sm container>
                 <Grid item xs container direction="column" spacing={2}>
@@ -47,9 +49,10 @@ const HomePage = (props) => {
               </Grid>
             </Grid>
     </Paper>
+            <Button color={"info"} variant="contained">Evrad 7 le meilleur</Button>
           <Footer/>
                  
-    </div>
+    </Container>
      
     );
   
